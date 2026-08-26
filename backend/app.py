@@ -33,16 +33,27 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "..", "static", "uploads")
-os.makedirs(UPLOAD_DIR, exist_ok=True)
+# Serverless / Vercel uploads directory handling
+if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"):
+    UPLOAD_DIR = os.path.join("/tmp", "uploads")
+else:
+    UPLOAD_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "static", "uploads"))
+
+try:
+    os.makedirs(UPLOAD_DIR, exist_ok=True)
+except Exception as e:
+    print(f"[SilageIQ] Notice creating upload dir: {e}")
 
 # In-memory API key override support for easy user configuration
 _custom_gemini_key: Optional[str] = None
 
 @app.on_event("startup")
 def startup_event():
-    init_db()
-    print("[SilageIQ] Backend initialized. Database ready.")
+    try:
+        init_db()
+        print("[SilageIQ] Backend initialized. Database ready.")
+    except Exception as e:
+        print(f"[SilageIQ] Startup init_db notice: {e}")
 
 @app.get("/api/health")
 def health_check():
@@ -225,20 +236,38 @@ def get_dashboard_stats():
     return get_stats()
 
 # Serve static files and frontend SPA
-static_path = os.path.join(os.path.dirname(__file__), "..", "static")
-app.mount("/static", StaticFiles(directory=static_path), name="static")
+static_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "static"))
+if os.path.exists(static_path):
+    app.mount("/static", StaticFiles(directory=static_path), name="static")
+
+# If uploads are in /tmp (Vercel serverless environment), serve /static/uploads/{filename} directly
+if UPLOAD_DIR != os.path.join(static_path, "uploads"):
+    @app.get("/static/uploads/{filename}")
+    def serve_serverless_upload(filename: str):
+        file_path = os.path.join(UPLOAD_DIR, filename)
+        if os.path.exists(file_path):
+            return FileResponse(file_path)
+        raise HTTPException(status_code=404, detail="File not found")
 
 @app.get("/")
 def serve_index():
-    return FileResponse(os.path.join(static_path, "index.html"))
+    index_file = os.path.join(static_path, "index.html")
+    if os.path.exists(index_file):
+        return FileResponse(index_file)
+    return JSONResponse({"status": "healthy", "message": "SilageIQ API running"})
 
 @app.get("/dashboard")
 def serve_dashboard():
-    return FileResponse(os.path.join(static_path, "index.html"))
+    index_file = os.path.join(static_path, "index.html")
+    if os.path.exists(index_file):
+        return FileResponse(index_file)
+    return JSONResponse({"status": "healthy", "message": "SilageIQ API running"})
 
 @app.get("/{full_path:path}")
 def catch_all(full_path: str):
-    # If not an API route, serve index.html for client routing
-    if not full_path.startswith("api/"):
-        return FileResponse(os.path.join(static_path, "index.html"))
+    # If not an API route, docs route, or static route, serve index.html for SPA client routing
+    if not (full_path.startswith("api/") or full_path.startswith("static/") or full_path.startswith("docs") or full_path.startswith("openapi.json")):
+        index_file = os.path.join(static_path, "index.html")
+        if os.path.exists(index_file):
+            return FileResponse(index_file)
     raise HTTPException(status_code=404, detail="Endpoint not found")

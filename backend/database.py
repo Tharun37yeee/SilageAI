@@ -1,15 +1,27 @@
 import sqlite3
 import json
 import os
+import shutil
 from datetime import datetime
 from typing import List, Optional, Dict, Any
 from .models import SubmissionRecord, StatsResponse
 from .seed_data import get_seed_submissions
 
-DB_PATH = os.path.join(os.path.dirname(__file__), "..", "silageiq.db")
+def get_db_path() -> str:
+    # Check if running in a serverless environment (e.g., Vercel, AWS Lambda)
+    if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"):
+        tmp_db = os.path.join("/tmp", "silageiq.db")
+        bundled_db = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "silageiq.db"))
+        if not os.path.exists(tmp_db) and os.path.exists(bundled_db):
+            try:
+                shutil.copy2(bundled_db, tmp_db)
+            except Exception as e:
+                print(f"[SilageIQ DB] Error copying bundled DB to /tmp: {e}")
+        return tmp_db
+    return os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "silageiq.db"))
 
 def get_db_connection():
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(get_db_path())
     conn.row_factory = sqlite3.Row
     return conn
 
