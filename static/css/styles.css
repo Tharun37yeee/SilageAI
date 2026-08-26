@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  
+  /* Agriculture Color Palette */
+  --agri-dark: #0b120c;
+  --agri-card: #131d14;
+  --agri-card-hover: #18261a;
+  --agri-border: #1e3020;
+  --agri-border-focus: #2d5a32;
+  --agri-green: #2d6a4f;
+  --agri-green-light: #52b788;
+  --agri-emerald: #10b981;
+  --agri-wheat: #eab308;
+  --agri-harvest: #f59e0b;
+  --agri-soil: #382923;
+  --agri-text-main: #f3f6f2;
+  --agri-text-muted: #8fa191;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--agri-dark);
+  color: var(--agri-text-main);
+  min-height: 100vh;
+  background-image: 
+    radial-gradient(ellipse at 25% 0%, rgba(45, 106, 79, 0.18) 0%, transparent 60%),
+    radial-gradient(ellipse at 85% 100%, rgba(234, 179, 8, 0.08) 0%, transparent 50%);
+  background-attachment: fixed;
+}
+
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: var(--font-heading);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #0b120c;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e3020;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2b452e;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes gentlePulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.85; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+.animate-gentle-pulse {
+  animation: gentlePulse 2.5s infinite ease-in-out;
+}
+
+/* Agriculture Themed Tier Cards */
+.tier-card-discard {
+  border-color: rgba(239, 68, 68, 0.6);
+  background: linear-gradient(180deg, rgba(239, 68, 68, 0.12) 0%, rgba(19, 29, 20, 0.95) 100%);
+  box-shadow: 0 10px 30px -10px rgba(239, 68, 68, 0.25);
+}
+
+.tier-card-caution {
+  border-color: rgba(245, 158, 11, 0.6);
+  background: linear-gradient(180deg, rgba(245, 158, 11, 0.12) 0%, rgba(19, 29, 20, 0.95) 100%);
+  box-shadow: 0 10px 30px -10px rgba(245, 158, 11, 0.2);
+}
+
+.tier-card-safe {
+  border-color: rgba(45, 106, 79, 0.8);
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.12) 0%, rgba(19, 29, 20, 0.95) 100%);
+  box-shadow: 0 10px 30px -10px rgba(16, 185, 129, 0.2);
+}
+
+/* Badges */
+.badge-discard {
+  background-color: rgba(239, 68, 68, 0.18);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.45);
+}
+
+.badge-caution {
+  background-color: rgba(245, 158, 11, 0.18);
+  color: #fde68a;
+  border: 1px solid rgba(245, 158, 11, 0.45);
+}
+
+.badge-safe {
+  background-color: rgba(45, 106, 79, 0.28);
+  color: #a7f3d0;
+  border: 1px solid rgba(82, 183, 136, 0.45);
+}
+
+/* Farm Specimen Card Hover */
+.specimen-card {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.specimen-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Glass panel */
+.agri-glass {
+  background: rgba(19, 29, 20, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}

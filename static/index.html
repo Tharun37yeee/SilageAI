@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>SilageIQ — Explainable AI Silage Safety & Quality Copilot</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2352b788' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z'/><path d='M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12'/></svg>">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            heading: ['"Outfit"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            agri: {
+              950: '#090e0a',
+              900: '#0d140e',
+              850: '#121c13',
+              800: '#172418',
+              750: '#1c2d1e',
+              700: '#233826',
+              600: '#2d4b31',
+              500: '#386641',
+              400: '#52b788',
+              300: '#74c69d',
+              200: '#95d5b2',
+              100: '#d8f3dc',
+              50: '#f2f9f4',
+            },
+            harvest: {
+              950: '#241400',
+              900: '#451a03',
+              800: '#78350f',
+              700: '#92400e',
+              600: '#b45309',
+              500: '#d97706',
+              400: '#f59e0b',
+              300: '#fbbf24',
+              200: '#fde68a',
+              100: '#fef3c7',
+              50: '#fffbeb',
+            },
+            earth: {
+              900: '#1c1917',
+              800: '#292524',
+              700: '#44403c',
+              600: '#57534e',
+              500: '#78716c',
+              400: '#a8a29e',
+              300: '#d6d3d1',
+              200: '#e7e5e4',
+              100: '#f5f5f4',
+              50: '#fafaf9',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- React 18 & ReactDOM -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  
+  <!-- Babel for JSX -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Custom Agriculture Styles -->
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body class="bg-agri-900 text-stone-100 antialiased selection:bg-agri-400 selection:text-agri-950">
+  <div id="root"></div>
+
+  <!-- React Application Script -->
+  <script type="text/babel" src="/static/app.js"></script>
+</body>
+</html>
